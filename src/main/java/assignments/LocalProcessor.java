@@ -20,6 +20,7 @@ public class LocalProcessor {
     private Long period = 10_000_000_000_000L;
     protected StringBuilder processorVersion;
     private Integer valueOfCheap;
+    private Scanner informationScanner;
     private List<String> stringArrayList;
 
     @ListIteratorAnnotation
@@ -40,12 +41,15 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) {
-        try (Scanner informationScanner = new Scanner(file)){
+        try {
+            informationScanner = new Scanner(file);
             while (informationScanner.hasNext()) {
                 processorVersion.append(informationScanner.nextLine());
             }
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
+        } finally {
+            informationScanner.close();
         }
     }
 }
