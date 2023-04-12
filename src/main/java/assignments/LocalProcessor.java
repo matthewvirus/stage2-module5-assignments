@@ -2,7 +2,6 @@ package assignments;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -14,8 +13,6 @@ import assignments.annotations.ReadFullProcessorNameAnnotation;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.naming.OperationNotSupportedException;
-
 @Getter
 @Setter
 public class LocalProcessor {
@@ -23,7 +20,6 @@ public class LocalProcessor {
     private Long period = 10_000_000_000_000L;
     protected StringBuilder processorVersion;
     private Integer valueOfCheap;
-    private Scanner informationScanner;
     private List<String> stringArrayList;
 
     @ListIteratorAnnotation
@@ -44,15 +40,12 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) {
-        try {
-            informationScanner = new Scanner(file);
+        try (Scanner informationScanner = new Scanner(file)){
             while (informationScanner.hasNext()) {
                 processorVersion.append(informationScanner.nextLine());
             }
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
-        } finally {
-            informationScanner.close();
         }
     }
 }
